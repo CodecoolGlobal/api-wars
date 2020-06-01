@@ -1,4 +1,5 @@
 function createModal() {
+    console.log('CreateModal')
     let createModal = document.createElement('div');
     createModal.setAttribute('id', 'myModal');
     createModal.setAttribute('class', 'modal');
@@ -14,11 +15,12 @@ function createModal() {
     createModalInside.appendChild(createModalTable);
     let getBody = document.querySelector('body');
     getBody.appendChild(createModal);
+    closeModalPage()
 
 }
 
 function initData(url, index) {
-    console.log(index)
+    console.log('InitData')
     let actualUrl = url + index.toString();
     fetch(actualUrl)
         .then((response) => response.json())
@@ -28,6 +30,7 @@ function initData(url, index) {
 }
 
 function deleteNotNeededData(data) {
+    console.log('DeleteData')
     for (let i in data.results) {
         delete data.results[i]["rotation_period"]
         delete data.results[i]["orbital_period"]
@@ -42,6 +45,7 @@ function deleteNotNeededData(data) {
 
 
 function generateTable(data) {
+    console.log('Generate Table')
     let getBody = document.getElementsByTagName('body')[0];
     let createTable = document.createElement('table');
     let endOfTableBody = document.createElement('tbody');
@@ -88,6 +92,7 @@ function generateTable(data) {
 }
 
 function putDataInModal(dataOfResidentInRows, residentButton) {
+    console.log('PutDataInModal')
     residentButton.addEventListener('click', function () {
         openModalPage();
         let headerList = ["name", "height", "mass", "skin color", "hair color", "eye color", "birth year", "gender"]
@@ -123,37 +128,45 @@ function putDataInModal(dataOfResidentInRows, residentButton) {
 }
 
 function openModalPage() {
+    console.log('OpenModal')
     let modal = document.querySelector('.modal');
     modal.style.display = "block";
 }
 
 function closeModalPage() {
+    console.log('CloseModal')
     let modal = document.querySelector('.modal');
     let closeButton = document.querySelector('.closeModal');
-    closeButton.addEventListener('click', function() {
+    closeButton.addEventListener('click', function () {
         modal.style.display = 'none';
         clearModal()
     })
 }
 
 function clearModal() {
+    console.log('ClearModal')
     let modal = document.querySelector(".modal");
     modal.remove()
     createModal()
 }
 
-function getNextPage(index) {
+function getPage(index) {
     document.querySelector('#nextPage').addEventListener('click', function () {
         if (index < 6) {
             initData('https://swapi.dev/api/planets/?page=', ++index);
+            let endOfTable = document.querySelector('tbody');
+            let table = document.querySelector('table');
+            endOfTable.remove();
+            table.remove();
         }
     })
-}
-
-function getPreviousPage(index) {
-    document.querySelector('#back').addEventListener('click', function () {
+    document.querySelector('#backPage').addEventListener('click', function () {
         if (index > 1) {
             initData('https://swapi.dev/api/planets/?page=', --index);
+            let endOfTable = document.querySelector('tbody');
+            let table = document.querySelector('table');
+            endOfTable.remove();
+            table.remove();
         }
     })
 }
@@ -162,9 +175,7 @@ function init() {
     let index = 1;
     createModal()
     initData('https://swapi.dev/api/planets/?page=', index)
-    getNextPage(index)
-    getPreviousPage(index)
-    closeModalPage()
+    getPage(index)
 }
 
 init()

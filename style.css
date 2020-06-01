@@ -37,7 +37,8 @@ button:focus {
 /* The Modal (background) */
 .modal {
   display: none;
-  position: fixed; /* Stay in place */
+  position: absolute; /* Stay in place */
+  top: 0;
   z-index: 1; /* Sit on top */
   margin-left: 33%;
   margin-top: 10px;
